@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Azure.Functions.Cli.Common;
 using Azure.Functions.Cli.Helpers;
 using Microsoft.Azure.WebJobs.Script;
@@ -12,7 +13,14 @@ namespace Azure.Functions.Cli.Diagnostics
 
         public UserSecretsConfigurationBuilder(string scriptPath)
         {
-            _scriptPath = scriptPath;
+            if (string.IsNullOrEmpty(scriptPath))
+            {
+                _scriptPath = Environment.CurrentDirectory;
+            }
+            else
+            {
+                _scriptPath = scriptPath;
+            }
         }
 
         public void Configure(IConfigurationBuilder builder)
@@ -25,6 +33,8 @@ namespace Azure.Functions.Cli.Diagnostics
 
         private string GetUserSecretsId(string scriptPath)
         {
+            if (string.IsNullOrEmpty(scriptPath)) return null;
+
             string projectFilePath = ProjectHelpers.FindProjectFile(scriptPath);
             if (projectFilePath == null) return null;
 

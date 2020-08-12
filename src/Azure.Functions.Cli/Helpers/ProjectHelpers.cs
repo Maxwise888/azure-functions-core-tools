@@ -20,7 +20,7 @@ namespace Azure.Functions.Cli.Helpers
             do
             {
                 var projectFiles = filePath.GetFiles("*.csproj");
-                if (projectFiles.Count() > 0)
+                if (projectFiles.Any())
                 {
                     foreach (FileInfo file in projectFiles)
                     {
